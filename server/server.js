@@ -14,11 +14,17 @@ const request = require('request');
 const MongoClient = require('mongodb').MongoClient;
 const url = 'mongodb://localhost:27017'; //Connection url
 
+//route config
+const userInsert = require('./router/user/userInformation.js');
+const login = require('./router/user/login.js');
+//const deleteUser = require('./router/user/deleteUser');
+
 //Create database
 MongoClient.connect(url, function(err, db) {
     if (err) throw err;
     console.log("Database created");
     const dbo = db.db('chatProject');
+    //Create collection users if not exist
     dbo.createCollection('users', function(err, res){
       if (err) {
           return;
@@ -26,6 +32,7 @@ MongoClient.connect(url, function(err, db) {
       console.log("Collection User Created!");
       db.close();
     });
+    //create collection chat if not exist
     dbo.createCollection('chat', function(err, res){
         if (err) {
             return;
@@ -33,6 +40,19 @@ MongoClient.connect(url, function(err, db) {
         console.log("Collection chat Created!");
         db.close();
     });
+    //Insert user information into users if it is not have been inserted
+    dbo.collection('users').find({}).count(function(err, result) {
+        if (err) throw err;
+        if (result == 0){
+            userInsert.insert(dbo);
+        }else{
+            db.close();
+        }
+    })
+    
+    //login route
+    login(app, dbo);
+
 })
 
 
