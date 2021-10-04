@@ -16,6 +16,10 @@ const url = 'mongodb://localhost:27017'; //Connection url
 
 //route config
 const userInsert = require('./router/user/userInformation.js');
+
+//fake data for user login
+const user = {username: 'Bob@gmail.com', password: '654321'};
+
 const login = require('./router/user/login.js');
 const deleteUser = require('./router/user/deleteUser.js');
 //const deleteUser = require('./router/user/deleteUser');
@@ -50,7 +54,7 @@ MongoClient.connect(url, function(err, db) {
     })
     
     //login route
-    login(app, dbo);
+    login(app, dbo, user);
 
     //deleteUser.delete(dbo);
 
