@@ -25,7 +25,7 @@ const url = 'mongodb://localhost:27017'; //Connection url
 const userInsert = require('./router/user/userInformation.js');
 
 //fake data for user login
-const user = {username: 'Bob@gmail.com', password: '123456'};
+//const user = {username: 'Bob@gmail.com', password: '123456'};
 
 const login = require('./router/user/login.js');
 const deleteUser = require('./router/user/deleteUser.js');
@@ -62,7 +62,7 @@ MongoClient.connect(url, function(err, db) {
     })
     
     //login route
-    login(app, dbo, user);
+    login(app, dbo);
 
     //deleteUser.delete(dbo);
 
@@ -82,20 +82,14 @@ sockets.connect(io, PORT);
 //Start server listening for requests
 Server.listen(http, PORT);
 
-/*var express = require('express'); //used for routing
-var app = express();
-app.use(express.json());
 
-var cors = require('cors');
+
+/*var cors = require('cors');
 app.use(cors());
 
 app.use(express.static(__dirname + '/../dist/my-app'));
-console.log(__dirname);
+console.log(__dirname);*/
 
-var http = require("http").Server(app);
-var server = http.listen(3000, function() {
-    console.log("Server listening on port: 3000");
-});*/
 
 //app.post('/login', require('./router/postlogin'));
 //app.post('/loginafter', require('./router/postLoginafter'));

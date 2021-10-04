@@ -1,3 +1,28 @@
-<p>login works!</p>
-<button (click) = "getUser()">请求数据</button>
+
+<ng-template [ngIf]="isLogin" [ngIfElse]="login">
+    <div>
+        <p>Welcome, {{this.user.username}}</p>
+        <button (click) = "logout()">Log out</button>
+        <app-chat></app-chat>
+    </div>
+</ng-template>
+    
+<ng-template #login>
+<div>    
+  <p>Login to enjoy chat!</p>
+  <form>
+      <p>
+          <label>username: </label>
+          <input type="text" name="username" [(ngModel)] = "user.username"/>
+      </p>
+      <p>
+          <label>password: </label>
+          <input type="text" name="password" [(ngModel)] = "user.password"/>
+      </p>
+  </form>
+
+  <button (click) = "getUser()">Login</button>
+</div> 
+</ng-template>
+
 
