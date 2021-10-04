@@ -19,6 +19,7 @@
     "@angular/platform-browser-dynamic": "^12.2.7",
     "@angular/router": "^12.2.7",
     "bootstrap": "^5.1.1",
+    "http": "0.0.1-security",
     "rxjs": "~6.6.0",
     "socket.io": "^4.2.0",
     "socket.io-client": "^4.2.0",
@@ -37,6 +38,7 @@
     "karma-coverage": "~2.0.3",
     "karma-jasmine": "~4.0.0",
     "karma-jasmine-html-reporter": "~1.7.0",
+    "mocha": "^9.1.2",
     "typescript": "~4.3.5"
   }
 }

@@ -18,7 +18,7 @@ const url = 'mongodb://localhost:27017'; //Connection url
 const userInsert = require('./router/user/userInformation.js');
 
 //fake data for user login
-const user = {username: 'Bob@gmail.com', password: '654321'};
+const user = {username: 'Bob@gmail.com', password: '6'};
 
 const login = require('./router/user/login.js');
 const deleteUser = require('./router/user/deleteUser.js');
