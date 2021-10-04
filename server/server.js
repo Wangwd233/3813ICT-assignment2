@@ -1,5 +1,12 @@
 const express = require('express');
 const app = express();
+var path = require('path');
+var bodyParser = require('body-parser');
+
+app.use(bodyParser.urlencoded({ extended: false }));
+
+app.use(bodyParser.json());
+
 const cors = require('cors');
 const http = require('http').Server(app);
 const io = require('socket.io')(http, {
@@ -18,10 +25,11 @@ const url = 'mongodb://localhost:27017'; //Connection url
 const userInsert = require('./router/user/userInformation.js');
 
 //fake data for user login
-const user = {username: 'Bob@gmail.com', password: '6'};
+const user = {username: 'Bob@gmail.com', password: '123456'};
 
 const login = require('./router/user/login.js');
 const deleteUser = require('./router/user/deleteUser.js');
+const { urlencoded } = require('express');
 //const deleteUser = require('./router/user/deleteUser');
 
 //Create database

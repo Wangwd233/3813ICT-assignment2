@@ -1,9 +1,10 @@
 const { MongoClient, Collection } = require('mongodb');
 
-module.exports = function(app, db, user){
-    app.get('/api/login', function(req, res){
+module.exports = function(app, db){
+    app.post('/api/login', function(req, res){
         console.log("In login route");
-        const query = {username: user.username};
+        console.log(req.body);
+        /*const query = {username: user.username};
         const empty = {}
         db.collection('users').find(query).count(function(err, num){ 
             if (err) throw err;
@@ -19,7 +20,7 @@ module.exports = function(app, db, user){
             }else{
                 res.send('Username does not exist!');
             }
-        })
+        })*/
 
     })
 }
