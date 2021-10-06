@@ -1,4 +1,5 @@
 const { Socket } = require("socket.io");
+const roomop = require('./router/socketrooms/rooms-crud');
 
 module.exports = {
 
@@ -6,6 +7,7 @@ module.exports = {
         var rooms=["room1", "room2", "room3", "room4"];//list of rooms
         var socketRoom = [];//list of socket.id and joined rooms
         var socketRoomnum = [];
+        var roomlist = '';
 
         //Example of creating a socket.io namespace
         const chat = io.of('/chat');
@@ -25,17 +27,30 @@ module.exports = {
                  //}
              });
              //User has requested to add a new room, check it does not already exist
-             socket.on('newRoom', (newroom)=>{
-
-                if(rooms.indexOf(newroom) == -1)
-                {
-                   rooms.push(newroom);
-                   chat.emit('roomlist', JSON.stringify(rooms));
-                }
+             socket.on('newroom', (newroom)=>{
+                
+                  roomop.roomcreate(db, newroom, (data) => {
+                       var result = data;
+                       console.log(result);
+                       roomop.roomlist(db, function(data){
+                         roomlist = data;
+                         io.emit('roomlist', JSON.stringify(roomlist));
+                       });
+                   });
+                   //rooms.push(newroom);
+                  
+                
              });
 
              socket.on('roomlist', (m)=>{
-                 chat.emit('roomlist', JSON.stringify(rooms));
+                 console.log(m);
+                 
+                 roomop.roomlist(db, function(data){
+                     roomlist = data;
+                     io.emit('roomlist', JSON.stringify(roomlist));
+                 });
+                 
+                 
              });
 
              socket.on('numusers', (room)=>{

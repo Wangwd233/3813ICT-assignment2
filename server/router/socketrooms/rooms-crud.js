@@ -1,28 +1,41 @@
 const { MongoClient } = require('mongodb');
 
-room = {roomname: ''};
+room = {_id: 0, roomname: ''};
 
 module.exports = {
-    roomlist: function(db){
+    roomlist: function(db, callback){
         db.collection('rooms').find({}).toArray((err, data) => {
             if (err) throw err;
-            console.log(data);
+            var result = data;
+            callback(result);
         })
+        
     },
 
-    roomcreate: function(db, roomname){
-        room.roomname = roomname;
-        var query = room;
+    roomcreate: function(db, name,callback){
+        room.roomname = name;
+        var query = {roomname: room.roomname};
+        var msg = '';
+        var id = 0;
+        
         db.collection('rooms').count(query, function(err, num){
             if (err) throw err;
             if (num == 0) {
-               db.collection('rooms').insertOne(query, function(err, res){
-                if (err) throw err;
-               });
-               console.log('create room successfully')
+                db.collection('rooms').count({}, function(err, num){
+                    id = num + 1;
+                    room._id = id;
+                    query = room;
+                    db.collection('rooms').insertOne(query, function(err, res){
+                        if (err) throw err;
+                    });
+                    msg = 'create room successfully';
+                       callback(msg);
+                })                                                                
             }else{
-                console.log('Already have the room');
-            }
+                msg = 'Already have the room';
+                callback(msg); 
+            }     
         })
+
     }
 }

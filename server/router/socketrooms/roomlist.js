@@ -1,9 +1,9 @@
 const { MongoClient } = require('mongodb');
 
 const roomlist = [
-    {roomname: 'room1'},
-    {roomname: 'room2'},
-    {roomname: 'room3'},
+    {_id: 1, roomname: 'room1'},
+    {_id: 2, roomname: 'room2'},
+    {_id: 3, roomname: 'room3'},
 ];
 
 module.exports = {
