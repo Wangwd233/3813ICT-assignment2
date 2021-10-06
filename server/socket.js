@@ -2,7 +2,7 @@ const { Socket } = require("socket.io");
 
 module.exports = {
 
-    connect: function(io, PORT){
+    connect: function(io, PORT, db){
         var rooms=["room1", "room2", "room3", "room4"];//list of rooms
         var socketRoom = [];//list of socket.id and joined rooms
         var socketRoomnum = [];

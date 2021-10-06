@@ -29,6 +29,11 @@ const userInsert = require('./router/user/userInformation.js');
 
 const login = require('./router/user/login.js');
 const deleteUser = require('./router/user/deleteUser.js');
+const createUser = require('./router/user/create');
+
+const roomlist = require('./router/socketrooms/roomlist.js');
+const roomdb = require('./router/socketrooms/rooms-crud.js');
+
 const { urlencoded } = require('express');
 //const deleteUser = require('./router/user/deleteUser');
 
@@ -37,13 +42,7 @@ MongoClient.connect(url, function(err, db) {
     if (err) throw err;
     console.log("Database created");
     const dbo = db.db('chatProject');
-    //Create collection users if not exist
-    dbo.createCollection('users', function(err, res){
-      if (err) {
-          return;
-      }
-      console.log("Collection User Created!");
-    });
+
     //create collection chat if not exist
     dbo.createCollection('chat', function(err, res){
         if (err) {
@@ -51,20 +50,23 @@ MongoClient.connect(url, function(err, db) {
         }
         console.log("Collection chat Created!");
     });
-    //Insert user information into users if it is not have been inserted
-    dbo.collection('users').find({}).count(function(err, result) {
-        if (err) throw err;
-        if (result == 0){
-            userInsert.insert(dbo);
-        }else{
-            console.log('User has already inserted');
-        }
-    })
+
+    //Create collecction rooms and input some data if it is not have been inserted
+    roomlist.insert(dbo);
+
+    //Create collection users and insert user information into users if it is not have been inserted
+    userInsert.insert(dbo);
     
     //login route
     login(app, dbo);
 
+    //create user route
+    createUser(app, dbo);
+
     //deleteUser.delete(dbo);
+
+    //socket connect
+    sockets.connect(io, PORT, dbo);
 
 })
 
@@ -77,7 +79,7 @@ const PORT = 3000;
 app.use(cors());
 
 //setup Socket
-sockets.connect(io, PORT);
+
 
 //Start server listening for requests
 Server.listen(http, PORT);

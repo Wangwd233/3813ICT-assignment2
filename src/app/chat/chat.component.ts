@@ -40,7 +40,7 @@ export class ChatComponent implements OnInit {
   }
 
   public chat(){
-    this.socketservice.chat(this.messagecontent);
+    this.socketservice.sendMessage(this.messagecontent);
   }
 
   

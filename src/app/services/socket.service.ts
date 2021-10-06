@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import io from 'socket.io-client';
+import { io } from 'socket.io-client';
 import { Observable } from 'rxjs';
 
 //games namespace
@@ -33,12 +33,12 @@ export class SocketService {
 
   joined(next){
     this.socket.on('joined', res=>next(res));
-  }
+  }*/
 
-  createroom(newroom){
+  createroom(newroom:any){
     this.socket.emit('newroom', newroom);
   }
-
+/*
   reqnumusers(selroom){
     this.socket.emit("numusers", selroom);
   }

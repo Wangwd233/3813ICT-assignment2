@@ -14,23 +14,38 @@ export class LoginComponent implements OnInit {
           username: '', 
           password: ''
         };
+  errorMsg = '';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+      
+   }
 
   ngOnInit(): void {
+    
   }
   
   getUser(){
-    const httpOptions = {
-      headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-    };
+    if (this.user.username === ''){
+      this.errorMsg = 'Username should not be empty!';
+    }else{
+      if(this.user.password === ''){
+        this.errorMsg = 'Password should not be empty!';
+      }else{
+        this.errorMsg = '';
+        const httpOptions = {
+          headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+        };
+        
+        var api = "http://localhost:3000/api/login";
+        this.http.post(api, this.user, httpOptions).subscribe(response => {
+           this.msg = response;
+           alert(this.msg.msg);
+           this.isLogin = this.msg.isLogin;
+        })
+      }
+    }
+
     
-    var api = "http://localhost:3000/api/login";
-    this.http.post(api, this.user, httpOptions).subscribe(response => {
-       this.msg = response;
-       alert(this.msg.msg);
-       this.isLogin = this.msg.isLogin;
-    })
   }
 
   logout(){
