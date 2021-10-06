@@ -1,7 +1,8 @@
 <p>chat works!</p>
 <div class="container">
     <form>
-        <div class="form-group" >
+      <ng-template [ngIf]="isinRoom" [ngIfElse]="isnotinRoom">
+        <div class="form-group">
           <label for="messagecontent">New Message</label>
           <input type="text" [(ngModel)]="messagecontent" name="messagecontent" id="messagecontent" class="form-control"/>
         </div>
@@ -12,15 +13,23 @@
 
             <button *ngIf="isinRoom" (click)="leaveroom()" class="btn btn-primary">Leave</button> &nbsp;-->
         </div>
-        <!--<select [(ngModel)] = "roomslist" name="roomslist">
+      </ng-template>
+      <ng-template #isnotinRoom>
+        <select [(ngModel)] = "roomslist" name="roomslist">
             <option [ngValue]="null">Select Room</option>
             <option *ngFor="let room of rooms">
-                {{room}}
+                {{room.roomname}}
             </option>
-        </select><br/><br/>
+        </select> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
         <label for="newroom">New Room</label>
            <input type="text" [(ngModel)]="newroom" name="newroom" id="newroom" class="form-control"/>
-           <button (click)="createroom()" class="btn btn-primary">Create New Room</button>-->
+           <button (click)="createroom()" class="btn btn-primary">Create New Room</button>
+        
+        <br/><br/>
+
+        <button (click)="joinroom()" class="btn btn-primary">Join</button> <br>
+           
+      </ng-template>
     </form>
     <!--<h3>Notices</h3>
     {{roomnotice}}<br>
@@ -29,4 +38,7 @@
     <ul>
         <li *ngFor="let message of messages">{{message}}</li>
     </ul>
+
+    <button (click)="getRoom()" class="btn btn-primary">getRoom</button> &nbsp;
+    
 </div>

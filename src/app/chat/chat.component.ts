@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnChanges } from '@angular/core';
 import { SocketService } from '../services/socket.service';
 
 const SERVER_URL = "http//localhost:3000";
@@ -11,7 +11,7 @@ export class ChatComponent implements OnInit {
   //private socket;
   messagecontent:string="";
   messages:string[]=[];
-  rooms=[];
+  rooms:any=[];
   roomslist:string="";
   roomnotice:string="";
   currentroom:string="";
@@ -31,11 +31,18 @@ export class ChatComponent implements OnInit {
 
     this.ioConnection = this.socketservice.initSocket();
 
+    this.socketservice.reqroomList();
+
+    this.socketservice.getroomList().subscribe((data:any) => {
+      this.rooms = JSON.parse(data);
+    })
+
     this.socketservice.getMessage().subscribe((message:any) => {
 
         this.messages.push(message);
 
       });
+
 
   }
 
@@ -43,22 +50,34 @@ export class ChatComponent implements OnInit {
     this.socketservice.sendMessage(this.messagecontent);
   }
 
+  getRoom(){
+    console.log(this.rooms);
+  }
+
   
 
-  /*joinroom(){
-
+  joinroom(){
+    if (this.roomslist){
+      console.log(this.roomslist);
+    }
+    
   }
 
   leaveroom(){
 
   }
 
-  createroom(){
+  public createroom(){
+    if (this.newroom == ""){
+      alert('Can not create room with empty name');
+    }else{
+      this.socketservice.createroom(this.newroom);
+    }  
+  }
+    
+  clearnotice(){
 
   }
 
-  clearnotice(){
-
-  }*/
-
 }
+

@@ -11,6 +11,7 @@ const SERVER_URL = 'http://localhost:3000';
 })
 export class SocketService {
   private socket: any;
+  
 
   constructor() { }
 
@@ -22,6 +23,7 @@ export class SocketService {
   chat(message: string){
     this.socket.emit('message', message);
   }
+
 
   /*joinroom(selroom): void{
     this.socket.emit("joinRoom", selroom);
@@ -46,15 +48,21 @@ export class SocketService {
   getnumusers(next){
     this.socket.on
   }
-  
+  */
   reqroomList(){
     this.socket.emit('roomlist', 'list please');
   }
 
-  getroomList(next){
-    this.socket.on('roomlist', res=>next(res));
-  }
+  getroomList(){
+    return new Observable(observer=>{
 
+      this.socket.on('roomlist', (data:any) => {observer.next(data)
+
+        });
+
+    });
+  }
+/*
   notice(next){
     this.socket.on('notice', res=>next(res));
   }*/
