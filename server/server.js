@@ -35,6 +35,8 @@ const roomlist = require('./router/socketrooms/roomlist.js');
 const roomdb = require('./router/socketrooms/rooms-crud.js');
 const socketroom = require('./router/socketrooms/socketroom.js');
 
+const chatmessages = require('./router/chatmessages/chat.js');
+
 const { urlencoded } = require('express');
 //const deleteUser = require('./router/user/deleteUser');
 
@@ -60,6 +62,9 @@ MongoClient.connect(url, function(err, db) {
 
     //Create collection socketroom
     socketroom.createcol(dbo);
+
+    //Create collection chatmessages
+    chatmessages.createcol(dbo);
     
     //login route
     login(app, dbo);

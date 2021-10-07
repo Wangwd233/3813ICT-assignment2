@@ -2,12 +2,17 @@ const { MongoClient } = require('mongodb');
 
 module.exports = {
     createcol:function(db){
-        db.createCollection('socketroom', function(err, res){
-            if (err) {
-                return;
-            }
-            console.log("Collection socketroom Created!");
-        });
+        db.collection('socketroom').drop(function(err, delOK) {
+            if (err) throw err;
+            if (delOK) console.log("Collection socketroom deleted");
+            db.createCollection('socketroom', function(err, res){
+                if (err) {
+                    return;
+                }
+                console.log("Collection socketroom Created!");
+            });
+          });
+        
     },
 
     query: function(db, id, callback){

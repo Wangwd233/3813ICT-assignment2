@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { SocketService } from '../services/socket.service';
 
 const SERVER_URL = "http//localhost:3000";
@@ -9,8 +9,9 @@ const SERVER_URL = "http//localhost:3000";
 })
 export class ChatComponent implements OnInit {
   //private socket;
+  @Input() user:string='';
   messagecontent:string="";
-  messages:string[]=[];
+  messages:any[] = [];
   rooms:any=[];
   roomslist:string="";
   roomnotice:string="";
@@ -52,28 +53,15 @@ export class ChatComponent implements OnInit {
     })
     
     this.socketservice.getMessage().subscribe((message:any) => {
-
-        this.messages.push(message);
-
-      });
+        this.messages = JSON.parse(message);
+    });
 
 
   }
 
   public chat(){
-    this.socketservice.sendMessage(this.messagecontent);
+    this.socketservice.sendMessage(this.messagecontent, this.user);
   }
-
-  getRoom(){
-    console.log(this.rooms);
-    if (this.isinRoom === false){
-      this.isinRoom = true;
-    }else{
-      this.isinRoom = false;
-    }
-  }
-
-  
 
   joinroom(){
     if (this.roomslist){

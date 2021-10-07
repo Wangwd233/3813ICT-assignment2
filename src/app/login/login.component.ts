@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { SocketService } from '../services/socket.service';
+import { ChatComponent } from '../chat/chat.component';
 
 @Component({
   selector: 'app-login',
@@ -8,6 +10,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 })
 export class LoginComponent implements OnInit {
 
+  @ViewChild('chatChild') chat:any;
   msg:any = '';
   isLogin = false;
   user = {
@@ -50,6 +53,7 @@ export class LoginComponent implements OnInit {
 
   logout(){
     this.isLogin = false;
+    this.chat.leaveroom();
   }
   
   /*getUser(){

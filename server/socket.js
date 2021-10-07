@@ -2,6 +2,7 @@ const { Socket } = require("socket.io");
 const util = require('util');
 const roomop = require('./router/socketrooms/rooms-crud.js');
 const socketroom = require('./router/socketrooms/socketroom.js');
+const chat = require('./router/chatmessages/chat.js');
 
 module.exports = {
 
@@ -12,19 +13,29 @@ module.exports = {
         var roomlist = '';
 
         //Example of creating a socket.io namespace
-        const chat = io.of('/chat');
            
            io.on('connection', (socket) => {
 
              //Event to send message back to the clients
-             socket.on('message', (message)=>{
+             socket.on('message', (message, user)=>{
                  console.log(message);
+                 console.log(user);
+                 
+                 socketroom.query(db, socket.id, function(result){
+                    room = result[0].roomname;
+                    chat.insert(db, room, user, message, function(msg){
+                        console.log(msg);
+                        chat.query(db, room, function(log){
+                            io.to(room).emit('message', JSON.stringify(log));
+                        });
+                    });
+                 })
+                     
                  //for(i=0; i<socketRoom.length; i++){
                      //check each if current socket id has joined a room
                      //if (socketRoom[i][0] == socket.id ){
                          //emit back to the room
                          //chat.to(socketRoom[i][1]).emit('message', message);
-                         io.emit('message', message);
                     // }
                  //}
              });
@@ -69,8 +80,6 @@ module.exports = {
 
              //join a room
              socket.on("joinRoom", (room)=>{
-                 console.log(socket.id);
-                 console.log(room);
                  var query = {roomname: room};
                  db.collection('rooms').find(query).toArray((err, data) => {
                      if (err) throw err;
@@ -111,24 +120,10 @@ module.exports = {
                  })    
              });
 
-            /*
-           for(let i=0; i<socketRoom.length; i++){
-                     if(socketRoom[i][0] == socket.id){
-                        socketRoom.splice(i, 1);
-                     }
-                 }
-                 for (let j=0; j<socketRoomnum.length; j++){
-                     if(socketRoomnum[j][0] == socket.room){
-                         socketRoomnum[j][1] = socketRoomnum[j][1]-1;
-                     }
-                 }
-            */ 
-
              //event to disconnect from the socket
              socket.on('disconnect', ()=>{
                  var room = '';
                  //chat.emit("disconnect");
-                 console.log(socket.id);
                  socketroom.query(db, socket.id, function(result){
                      room = result[0].roomname;
                      socketroom.delete(db, socket.id, function(msg){

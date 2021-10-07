@@ -60,6 +60,10 @@ export class SocketService {
 
     });
   }
+
+  sendUser(user:any){
+    this.socket.emit('user', user)
+  }
   
   reqroomList(){
     this.socket.emit('roomlist', 'list please');
@@ -75,16 +79,6 @@ export class SocketService {
     });
   }
 
-  getAlt(){
-    return new Observable(observer=>{
-
-      this.socket.on('alt', (msg:any) => {
-            observer.next(msg); 
-        });
-
-    });
-  }
-
   notice(){
     return new Observable(observer=>{
 
@@ -95,8 +89,8 @@ export class SocketService {
     });
   }
 
-  sendMessage(message: string): void{
-    this.socket.emit("message", message);
+  sendMessage(message: string, user:string): void{
+    this.socket.emit("message", message, user);
   }
 
   /*getMessage(){

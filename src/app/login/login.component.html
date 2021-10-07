@@ -2,8 +2,8 @@
 <ng-template [ngIf]="isLogin" [ngIfElse]="login">
     <div>
         <p>Welcome, {{this.user.username}}</p>
-        <button (click) = "logout()">Log out</button>
-        <app-chat></app-chat>
+        <button (click) = "logout()" class="btn btn-primary">Log out</button>
+        <app-chat [user]="user.username" #chatChild></app-chat>
     </div>
 </ng-template>
     
@@ -21,7 +21,7 @@
       </p>
   </form>
 
-  <button (click) = "getUser()">Login</button>
+  <button (click) = "getUser()" class="btn btn-primary">Login</button>
   
     <h3>{{this.errorMsg}}</h3>
 </div> 
