@@ -28,10 +28,10 @@ export class SocketService {
   joinroom(selroom:any): void{
     this.socket.emit("joinRoom", selroom);
   }
-/*
-  leaveroom(selroom): void{
+
+  leaveroom(selroom:any): void{
     this.socket.emit("leaveRoom", selroom);
-  }*/
+  }
 
   joined(){
     return new Observable(observer=>{

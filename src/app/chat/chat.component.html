@@ -11,11 +11,12 @@
 
             <!--<button *ngIf="isinRoom" (click)="joinroom()" class="btn btn-primary">Join</button> &nbsp;
 
-            <button *ngIf="isinRoom" (click)="leaveroom()" class="btn btn-primary">Leave</button> &nbsp;-->
+            -->
         </div>
 
         <p class="text">Curret in channel: {{roomslist}}</p>
         <p class="text">{{numusers}} users in this channel right now</p>
+        <button (click)="leaveroom()" class="btn btn-primary">Leave</button>
       </ng-template>
       <ng-template #isnotinRoom>
         <select [(ngModel)] = "roomslist" name="roomslist">

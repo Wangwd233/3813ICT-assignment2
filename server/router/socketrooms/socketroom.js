@@ -10,6 +10,21 @@ module.exports = {
         });
     },
 
+    query: function(db, id, callback){
+        var query = {socketid: id};
+        db.collection('socketroom').find(query).count((err, num) => {
+            if (err) throw err;
+            if (num > 0){
+               db.collection('socketroom').find(query).toArray(function(err, result){
+                   if (err) throw err;
+                   callback(result);
+               })
+            }else{
+                
+            }
+        })
+    },
+
     check: function(db, room, id, callback){
        var query = {roomname: room, socketid: id};
        var Inroom = false;
@@ -42,13 +57,27 @@ module.exports = {
             console.log(query);
             db.collection('socketroom').insertOne(query, function(err, res){
                 if (err) throw err;
+                msg = 'Join room successfully';
+                callback(msg);
             });
-            msg = 'Join room successfully';
-            callback(msg);
         })
     },
     
-    delete: function(){
-
+    delete: function(db, id, callback){
+        var query = {socketid: id};
+        var msg = '';
+        db.collection('socketroom').count(query, function(err, num){
+            if (err) throw err;
+            if (num > 0){
+                db.collection('socketroom').deleteOne(query, function(err){
+                    if (err) throw err;
+                    msg = 'A user leave room';
+                    callback(msg);
+                })
+            }else{
+                msg = 'Oops, something going wrong';
+                callback(msg);
+            }
+        })
     }
 }

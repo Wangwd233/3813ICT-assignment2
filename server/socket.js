@@ -37,7 +37,7 @@ module.exports = {
                        roomop.roomlist(db, function(data){
                          roomlist = data;
                          io.emit('roomlist', JSON.stringify(roomlist));
-                         socket.emit('alt', result);
+                         socket.emit('notice', result);
                        });
                    });   
 
@@ -88,58 +88,31 @@ module.exports = {
                                         socket.emit('joined', true);
                                     });
                                 }else{
-                                    console.log('User is already in the room');
+                                    io.to(room).emit('notice','User is already in the room');
                                 }
                             }); 
                      }else{
-                        console.log('not have such room');
+                        io.to(room).emit('notice','not have such room');
                      }
                  })
 
-               /* 
-                            //recalculate the number of users in a room
-                            for (let j=0; j<socketRoomnum.length; j++){
-                                if (socketRoomnum[j][0]==room){
-                                    socketRoomnum[j][1] = socketRoomnum[j][1]+1;
-                                    hasroomnum = true;
-                                }
-                            }
-                            //start tracking numbers of users in a room if it has mot been done before
-                            if (hasroomnum == false){
-                                socketRoomnum.push([room, 1]);
-                            }
-                        }
-                        chat.in(room).emit('notice', "A new user has joined");
-                    });
-                    return chat.in(room).emit("joined", room);
-                }*/
              });
 
              //leave a room
              socket.on("leaveRoom", (room)=>{
-
-                for (let i=0; i<socketRoom.length; i++){
-                    if (socketRoom[i][0] == socket.id){
-                        socketRoom.splice(i, 1);
-                        socket.leave(room);
-                        chat.to(room).emit("notice", "A user has left");
-                    }
-                }
-
-                for (let j=0; j<socketRoomnum.length; j++){
-                    if (socketRoomnum[j][0] == room){
-                        socketRoomnum[j][1] = socketRoomnum[j][1]-1;
-                        if(socketRoomnum[j][0] == 0){
-                            socketRoomnum.splice(j,1);
-                        }
-                    }
-                }
+                 socketroom.delete(db, socket.id, function(msg){
+                     console.log(msg);
+                     socket.leave(room);
+                     socketroom.count(db, room, function(num){
+                        io.to(room).emit('numusers', num);
+                     })
+                     io.to(room).emit("notice", "A user has left");
+                     socket.emit('joined', false);
+                 })    
              });
 
-             //event to disconnect from the socket
-             socket.on('disconnect', ()=>{
-                 //chat.emit("disconnect");
-                 for(let i=0; i<socketRoom.length; i++){
+            /*
+           for(let i=0; i<socketRoom.length; i++){
                      if(socketRoom[i][0] == socket.id){
                         socketRoom.splice(i, 1);
                      }
@@ -149,6 +122,25 @@ module.exports = {
                          socketRoomnum[j][1] = socketRoomnum[j][1]-1;
                      }
                  }
+            */ 
+
+             //event to disconnect from the socket
+             socket.on('disconnect', ()=>{
+                 var room = '';
+                 //chat.emit("disconnect");
+                 console.log(socket.id);
+                 socketroom.query(db, socket.id, function(result){
+                     room = result[0].roomname;
+                     socketroom.delete(db, socket.id, function(msg){
+                         console.log(msg);
+                         socket.leave(room);
+                         socketroom.count(db, room, function(num){
+                            io.to(room).emit('numusers', num);
+                         })
+                         io.to(room).emit("notice", "A user has disconnected");
+                     })
+                 });
+                 
                  console.log("Client disconnected");
              })
            })

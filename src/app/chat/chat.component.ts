@@ -84,7 +84,7 @@ export class ChatComponent implements OnInit {
   }
 
   leaveroom(){
-
+     this.socketservice.leaveroom(this.roomslist);
   }
 
   public createroom(){

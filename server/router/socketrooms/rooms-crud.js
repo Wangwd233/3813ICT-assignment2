@@ -26,9 +26,9 @@ module.exports = {
                     query = room;
                     db.collection('rooms').insertOne(query, function(err, res){
                         if (err) throw err;
-                    });
-                    msg = 'create room successfully';
+                        msg = 'create room successfully';
                        callback(msg);
+                    });    
                 })                                                                
             }else{
                 msg = 'Already have the room';
