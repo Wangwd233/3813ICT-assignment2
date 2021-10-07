@@ -33,6 +33,7 @@ const createUser = require('./router/user/create');
 
 const roomlist = require('./router/socketrooms/roomlist.js');
 const roomdb = require('./router/socketrooms/rooms-crud.js');
+const socketroom = require('./router/socketrooms/socketroom.js');
 
 const { urlencoded } = require('express');
 //const deleteUser = require('./router/user/deleteUser');
@@ -51,11 +52,14 @@ MongoClient.connect(url, function(err, db) {
         console.log("Collection chat Created!");
     });
 
-    //Create collecction rooms and input some data if it is not have been inserted
+    //Create collection rooms and input some data if it is not have been inserted
     roomlist.insert(dbo);
 
     //Create collection users and insert user information into users if it is not have been inserted
     userInsert.insert(dbo);
+
+    //Create collection socketroom
+    socketroom.createcol(dbo);
     
     //login route
     login(app, dbo);

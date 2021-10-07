@@ -19,6 +19,7 @@ export class ChatComponent implements OnInit {
   newroom:string="";
   numusers:number=0;
   ioConnection:any;
+  alertMessges:any;
 
 
   constructor(private socketservice: SocketService) {}
@@ -37,6 +38,19 @@ export class ChatComponent implements OnInit {
       this.rooms = JSON.parse(data);
     })
 
+    this.socketservice.notice().subscribe((data:any) => {
+      this.roomnotice = data;
+      alert(this.roomnotice);
+    })
+
+    this.socketservice.joined().subscribe((data:any) => {
+      this.isinRoom = data;
+    })
+    
+    this.socketservice.getnumusers().subscribe((data:any) => {
+      this.numusers = data;
+    })
+    
     this.socketservice.getMessage().subscribe((message:any) => {
 
         this.messages.push(message);
@@ -52,6 +66,11 @@ export class ChatComponent implements OnInit {
 
   getRoom(){
     console.log(this.rooms);
+    if (this.isinRoom === false){
+      this.isinRoom = true;
+    }else{
+      this.isinRoom = false;
+    }
   }
 
   
@@ -59,6 +78,7 @@ export class ChatComponent implements OnInit {
   joinroom(){
     if (this.roomslist){
       console.log(this.roomslist);
+      this.socketservice.joinroom(this.roomslist);
     }
     
   }

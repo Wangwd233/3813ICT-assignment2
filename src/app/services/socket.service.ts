@@ -25,17 +25,23 @@ export class SocketService {
   }
 
 
-  /*joinroom(selroom): void{
+  joinroom(selroom:any): void{
     this.socket.emit("joinRoom", selroom);
   }
-
+/*
   leaveroom(selroom): void{
     this.socket.emit("leaveRoom", selroom);
-  }
-
-  joined(next){
-    this.socket.on('joined', res=>next(res));
   }*/
+
+  joined(){
+    return new Observable(observer=>{
+
+      this.socket.on('joined', (data:any) => {
+            observer.next(data); 
+        });
+
+    });
+  }
 
   createroom(newroom:any){
     this.socket.emit('newroom', newroom);
@@ -44,11 +50,17 @@ export class SocketService {
   reqnumusers(selroom){
     this.socket.emit("numusers", selroom);
   }
+*/
+  getnumusers(){
+    return new Observable(observer=>{
 
-  getnumusers(next){
-    this.socket.on
+      this.socket.on('numusers', (data:any) => {
+            observer.next(data); 
+        });
+
+    });
   }
-  */
+  
   reqroomList(){
     this.socket.emit('roomlist', 'list please');
   }
@@ -56,16 +68,32 @@ export class SocketService {
   getroomList(){
     return new Observable(observer=>{
 
-      this.socket.on('roomlist', (data:any) => {observer.next(data)
-
+      this.socket.on('roomlist', (data:any) => {
+            observer.next(data); 
         });
 
     });
   }
-/*
-  notice(next){
-    this.socket.on('notice', res=>next(res));
-  }*/
+
+  getAlt(){
+    return new Observable(observer=>{
+
+      this.socket.on('alt', (msg:any) => {
+            observer.next(msg); 
+        });
+
+    });
+  }
+
+  notice(){
+    return new Observable(observer=>{
+
+      this.socket.on('notice', (data:any) => {
+            observer.next(data); 
+        });
+
+    });
+  }
 
   sendMessage(message: string): void{
     this.socket.emit("message", message);

@@ -8,8 +8,7 @@ module.exports = {
             if (err) throw err;
             var result = data;
             callback(result);
-        })
-        
+        })    
     },
 
     roomcreate: function(db, name,callback){

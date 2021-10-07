@@ -1,5 +1,7 @@
 const { Socket } = require("socket.io");
-const roomop = require('./router/socketrooms/rooms-crud');
+const util = require('util');
+const roomop = require('./router/socketrooms/rooms-crud.js');
+const socketroom = require('./router/socketrooms/socketroom.js');
 
 module.exports = {
 
@@ -35,11 +37,10 @@ module.exports = {
                        roomop.roomlist(db, function(data){
                          roomlist = data;
                          io.emit('roomlist', JSON.stringify(roomlist));
+                         socket.emit('alt', result);
                        });
-                   });
-                   //rooms.push(newroom);
-                  
-                
+                   });   
+
              });
 
              socket.on('roomlist', (m)=>{
@@ -68,23 +69,34 @@ module.exports = {
 
              //join a room
              socket.on("joinRoom", (room)=>{
+                 console.log(socket.id);
+                 console.log(room);
+                 var query = {roomname: room};
+                 db.collection('rooms').find(query).toArray((err, data) => {
+                     if (err) throw err;
+                     if(data){
+                         socket.join(room);
+                            socketroom.check(db, room, socket.id, function(Inroom){
+                                console.log(Inroom);
+                                if (Inroom == false){
+                                    socketroom.insert(db, room, socket.id, function(msg){
+                                        console.log(msg);
+                                        socketroom.count(db, room, function(num){
+                                            io.to(room).emit('numusers', num);
+                                        })
+                                        io.to(room).emit('notice', "A new user has joined");
+                                        socket.emit('joined', true);
+                                    });
+                                }else{
+                                    console.log('User is already in the room');
+                                }
+                            }); 
+                     }else{
+                        console.log('not have such room');
+                     }
+                 })
 
-                if (rooms.includes(room)) {
-                    socket.join(room, ()=>{
-                        //check not already in a room
-                        var inroomSocketarray = false;
-
-                        for (i=0; i<socketRoom.length; i++){
-                            //track who is in each room
-                            if (socketRoom[i][0] == socket.id){
-                                socketRoom[i][1] == room;
-                                inroom = true;
-                            }
-                        }
-                        if (inroomSocketarray == false){
-                            //add socketid/room record
-                            socketRoom.push([socket.id, room]);
-                            var hasroomnum = false;
+               /* 
                             //recalculate the number of users in a room
                             for (let j=0; j<socketRoomnum.length; j++){
                                 if (socketRoomnum[j][0]==room){
@@ -100,7 +112,7 @@ module.exports = {
                         chat.in(room).emit('notice', "A new user has joined");
                     });
                     return chat.in(room).emit("joined", room);
-                }
+                }*/
              });
 
              //leave a room

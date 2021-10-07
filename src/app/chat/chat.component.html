@@ -13,6 +13,9 @@
 
             <button *ngIf="isinRoom" (click)="leaveroom()" class="btn btn-primary">Leave</button> &nbsp;-->
         </div>
+
+        <p class="text">Curret in channel: {{roomslist}}</p>
+        <p class="text">{{numusers}} users in this channel right now</p>
       </ng-template>
       <ng-template #isnotinRoom>
         <select [(ngModel)] = "roomslist" name="roomslist">
@@ -35,10 +38,16 @@
     {{roomnotice}}<br>
     <button (click)="clearnotice()" class="btn btn-primary">Clearnotice</button><br/>
     <h3>Char Messages for {{currentroom}} - {{numusers}} Active Users</h3>-->
-    <ul>
-        <li *ngFor="let message of messages">{{message}}</li>
-    </ul>
+
+    <div class = "chat-messages">
+      <div class="message" *ngFor="let message of messages">
+        <p class="meta">Bob@gmail.com</p>
+        <p class="text">{{message}}</p>
+      </div>
+    </div>
 
     <button (click)="getRoom()" class="btn btn-primary">getRoom</button> &nbsp;
+
+    
     
 </div>
