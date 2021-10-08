@@ -29,7 +29,6 @@ const userInsert = require('./router/user/userInformation.js');
 
 const login = require('./router/user/login.js');
 const deleteUser = require('./router/user/deleteUser.js');
-const createUser = require('./router/user/create');
 
 const roomlist = require('./router/socketrooms/roomlist.js');
 const roomdb = require('./router/socketrooms/rooms-crud.js');
@@ -68,9 +67,6 @@ MongoClient.connect(url, function(err, db) {
     
     //login route
     login(app, dbo);
-
-    //create user route
-    createUser(app, dbo);
 
     //deleteUser.delete(dbo);
 

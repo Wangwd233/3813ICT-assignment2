@@ -31,14 +31,20 @@
                 {{room.roomname}}
             </option>
         </select> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-        <label for="newroom">New Room</label>
-           <input type="text" [(ngModel)]="newroom" name="newroom" id="newroom" class="form-control"/>
-           <button (click)="createroom()" class="btn btn-primary">Create New Room</button>
+        
         
         <br/><br/>
 
         <button (click)="joinroom()" class="btn btn-primary">Join</button> <br>
            
+      </ng-template>
+
+      <ng-template [ngIf]="isAdmin">
+        <div>
+          <label for="newroom">New Room</label>
+           <input type="text" [(ngModel)]="newroom" name="newroom" id="newroom" class="form-control"/>
+           <button (click)="createroom()" class="btn btn-primary">Create New Room</button>
+        </div>
       </ng-template>
     </form>
     <!--<h3>Notices</h3>

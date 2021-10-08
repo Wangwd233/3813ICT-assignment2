@@ -95,6 +95,9 @@ module.exports = {
                                         })
                                         io.to(room).emit('notice', "A new user has joined");
                                         socket.emit('joined', true);
+                                        chat.query(db, room, function(log){
+                                            socket.emit('message', JSON.stringify(log));
+                                        })
                                     });
                                 }else{
                                     io.to(room).emit('notice','User is already in the room');

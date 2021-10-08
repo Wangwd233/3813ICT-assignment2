@@ -2,8 +2,9 @@
 <ng-template [ngIf]="isLogin" [ngIfElse]="login">
     <div>
         <p>Welcome, {{this.user.username}}</p>
+        <p>Your identity is {{this.user.type}}</p>
         <button (click) = "logout()" class="btn btn-primary">Log out</button>
-        <app-chat [user]="user.username" #chatChild></app-chat>
+        <app-chat [user]="user.username" [usertype]="user.type" #chatChild></app-chat>
     </div>
 </ng-template>
     

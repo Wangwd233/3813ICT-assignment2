@@ -10,6 +10,8 @@ const SERVER_URL = "http//localhost:3000";
 export class ChatComponent implements OnInit {
   //private socket;
   @Input() user:string='';
+  @Input() usertype:string='';
+  isAdmin = false;
   messagecontent:string="";
   messages:any[] = [];
   rooms:any=[];
@@ -56,6 +58,9 @@ export class ChatComponent implements OnInit {
         this.messages = JSON.parse(message);
     });
 
+    if (this.usertype == 'admin'){
+      this.isAdmin = true;
+    }
 
   }
 
@@ -68,11 +73,11 @@ export class ChatComponent implements OnInit {
       console.log(this.roomslist);
       this.socketservice.joinroom(this.roomslist);
     }
-    
   }
 
   leaveroom(){
      this.socketservice.leaveroom(this.roomslist);
+     this.messages = [];
   }
 
   public createroom(){

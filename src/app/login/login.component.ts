@@ -15,7 +15,8 @@ export class LoginComponent implements OnInit {
   isLogin = false;
   user = {
           username: '', 
-          password: ''
+          password: '',
+          type: '',
         };
   errorMsg = '';
 
@@ -44,6 +45,7 @@ export class LoginComponent implements OnInit {
            this.msg = response;
            alert(this.msg.msg);
            this.isLogin = this.msg.isLogin;
+           this.user = this.msg.user;
         })
       }
     }

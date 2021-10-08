@@ -3,7 +3,9 @@ const { MongoClient } = require('mongodb');
 module.exports = {
     createcol:function(db){
         db.collection('socketroom').drop(function(err, delOK) {
-            if (err) throw err;
+            if (err) {
+                return;
+            };
             if (delOK) console.log("Collection socketroom deleted");
             db.createCollection('socketroom', function(err, res){
                 if (err) {
