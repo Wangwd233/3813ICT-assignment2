@@ -45,7 +45,11 @@ export class LoginComponent implements OnInit {
            this.msg = response;
            alert(this.msg.msg);
            this.isLogin = this.msg.isLogin;
-           this.user = this.msg.user;
+           if(this.msg.user){
+             this.user = this.msg.user;
+           }
+           //this.user = this.msg.user;
+           console.log(this.msg);
         })
       }
     }
@@ -54,8 +58,19 @@ export class LoginComponent implements OnInit {
   }
 
   logout(){
-    this.isLogin = false;
+    
     this.chat.leaveroom();
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+    };
+    
+    var api = "http://localhost:3000/api/logout";
+
+    this.http.post(api, this.user, httpOptions).subscribe(response => {
+      
+    })
+
+    this.isLogin = false;
   }
   
   /*getUser(){
