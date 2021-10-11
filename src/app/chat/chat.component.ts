@@ -23,6 +23,7 @@ export class ChatComponent implements OnInit {
   numusers:number=0;
   ioConnection:any;
   alertMessges:any;
+  div:any|null = "";
 
 
   constructor(private socketservice: SocketService) {}
@@ -48,6 +49,9 @@ export class ChatComponent implements OnInit {
 
     this.socketservice.joined().subscribe((data:any) => {
       this.isinRoom = data;
+      setTimeout(()=>{
+        this.scrollDown();
+      }, 0);
     })
     
     this.socketservice.getnumusers().subscribe((data:any) => {
@@ -56,6 +60,9 @@ export class ChatComponent implements OnInit {
     
     this.socketservice.getMessage().subscribe((message:any) => {
         this.messages = JSON.parse(message);
+        setTimeout(()=>{
+          this.scrollDown();
+        }, 0)
     });
 
     if (this.usertype == 'admin'){
@@ -64,7 +71,7 @@ export class ChatComponent implements OnInit {
 
   }
 
-  public chat(){
+   chat(){
     this.socketservice.sendMessage(this.messagecontent, this.user);
   }
 
@@ -88,6 +95,11 @@ export class ChatComponent implements OnInit {
     }  
   }
     
+  scrollDown(){
+    this.div = document.getElementById('chatboard');
+    this.div.scrollTop = this.div.scrollHeight;
+  }
+
   clearnotice(){
 
   }

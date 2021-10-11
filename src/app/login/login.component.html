@@ -1,31 +1,49 @@
-
-<ng-template [ngIf]="isLogin" [ngIfElse]="login">
-    <div>
-        <p>Welcome, {{this.user.username}}</p>
-        <p>Your identity is {{this.user.type}}</p>
-        <button (click) = "logout()" class="btn btn-primary">Log out</button>
-        <app-chat [user]="user.username" [usertype]="user.type" #chatChild></app-chat>
+<div class="container">
+  <div class="row align-items-start">
+    <div class="col">
+        <ng-template [ngIf]="isLogin">
+            <p>Welcome, {{this.user.username}}</p>
+            <p>Your identity is {{this.user.type}}</p>
+            <button (click) = "logout()" class="btn btn-primary">Log out</button>
+        </ng-template>
     </div>
-</ng-template>
-    
-<ng-template #login>
-<div>    
-  <p>Login to enjoy chat!</p>
-  <form>
-      <p>
-          <label>username: </label>
-          <input type="email" name="username" [(ngModel)] = "user.username" />
-      </p>
-      <p>
-          <label>password: </label>
-          <input type="text" name="password" [(ngModel)] = "user.password" />
-      </p>
-  </form>
+    <div class="col">
+        <ng-template [ngIf]="isLogin" [ngIfElse]="login">
+            <div>
+                
+                <app-chat [user]="user.username" [usertype]="user.type" #chatChild></app-chat>
+            </div>
+        </ng-template>
+            
+        <ng-template #login>
+        <br/><br/><br/><br/>
+        <div class="container border border-secondary rounded" style="background-color: #eee;">    
+          <h1>Login to enjoy chat!</h1>
+          <form action="/action_page.php">
+            <div class="form-group">
+              <label for="email">Email address:</label>
+              <input type="email" class="form-control" placeholder="Enter email" name="username" [(ngModel)] = "user.username">
+            </div>
+            <div class="form-group">
+              <label for="pwd">Password:</label>
+              <input type="password" class="form-control" placeholder="Enter password" name="password" [(ngModel)] = "user.password">
+            </div>
+            <button (click) = "getUser()"  class="btn btn-primary">Submit</button>
+          </form>
 
-  <button (click) = "getUser()" class="btn btn-primary">Login</button>
-  
-    <h3>{{this.errorMsg}}</h3>
-</div> 
-</ng-template>
+          <div class="container alert alert-light" style="background-color: #eee;">
+            <strong>{{this.errorMsg}}</strong> 
+          </div>
+            
+        </div> 
+        </ng-template>
+    </div>
+    <div class="col">
+       
+    </div>
+  </div>
+</div>
+
+
 
 

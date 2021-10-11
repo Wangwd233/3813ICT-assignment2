@@ -20,16 +20,20 @@ module.exports = {
              socket.on('message', (message, user)=>{
                  console.log(message);
                  console.log(user);
-                 
-                 socketroom.query(db, socket.id, function(result){
-                    room = result[0].roomname;
-                    chat.insert(db, room, user, message, function(msg){
-                        console.log(msg);
-                        chat.query(db, room, function(log){
-                            io.to(room).emit('message', JSON.stringify(log));
+                 if(message == ""){
+
+                 }else{
+                    socketroom.query(db, socket.id, function(result){
+                        room = result[0].roomname;
+                        chat.insert(db, room, user, message, function(msg){
+                            console.log(msg);
+                            chat.query(db, room, function(log){
+                                io.to(room).emit('message', JSON.stringify(log));
+                            });
                         });
-                    });
-                 })
+                     })
+                 }
+                 
                      
                  //for(i=0; i<socketRoom.length; i++){
                      //check each if current socket id has joined a room
@@ -74,7 +78,7 @@ module.exports = {
                      }
                  }
 
-                 chat.in(room).emit('numusers', usercount);
+                 io.in(room).emit('numusers', usercount);
 
              });
 

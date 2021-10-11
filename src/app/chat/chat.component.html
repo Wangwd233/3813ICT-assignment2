@@ -1,31 +1,56 @@
 
 <div class="container">
-        
+   
+   <br/><br/><br/><br/>
     <form>
       <ng-template [ngIf]="isinRoom" [ngIfElse]="isnotinRoom">
-        <div class="form-group">
-          <p class="text">Curret in channel: {{roomslist}}</p>
-          <p class="text">{{numusers}} users in this channel right now</p> 
-          <button (click)="leaveroom()" class="btn btn-primary">Leave</button>
-          <div>
-            <label for="messagecontent">New Message</label>
-            <input type="text" [(ngModel)]="messagecontent" name="messagecontent" id="messagecontent" class="form-control"/>
-          </div>
+        <div class="container">
+          <h2 class="text-primary">Chat history</h2>
         </div>
-        <div class="form-group">
-            <button (click)="chat()" class="btn btn-primary">Chat</button>
-        </div>
-
-        <div class = "chat-messages">
-          <div class="message" *ngFor="let message of messages">
+        
+       <div class="container border border-secondary rounded" style="background-color: #eee;">
+        <div style=" height:200px; width: 400px; overflow:auto" id='chatboard'>
+         <div  *ngFor="let message of messages">
+          <br>
+          <div class="message border border-primary rounded" style="height: 70px; width: 200px; background-color: aqua;">
             <p class="meta">{{message.user}}</p>
             <p class="text">{{message.message}}</p>
           </div>
         </div>
+        </div>
+
+        <div class="input-group mb-3">
+          <input type="text" [(ngModel)]="messagecontent" name="messagecontent" id="messagecontent" class="form-control"/>
+          <div class="input-group-prepend">
+           <button (click)="chat()" class="btn btn-outline-primary">Chat</button> 
+         </div>
+        </div>
+      </div>
+      <br/><br/><br/><br/>
+      <div>
+        <div class="form-group">
+          <p class="text">Curret in channel: {{roomslist}}</p>
+          <p class="text">{{numusers}} users in this channel right now</p> 
+          <button (click)="leaveroom()" class="btn btn-primary">Leave room</button>
+        </div>
+      </div>
+        
 
       </ng-template>
       <ng-template #isnotinRoom>
-        <select [(ngModel)] = "roomslist" name="roomslist">
+      <div class="container" style="background-color: #eee;">
+        <ng-template [ngIf]="isAdmin">
+          <div>
+            <label for="newroom">New Room</label>
+             <input type="text" [(ngModel)]="newroom" name="newroom" id="newroom" class="form-control"/>
+             <br/>
+             <button (click)="createroom()" class="btn btn-outline-secondary">Create New Room</button>
+          </div>
+         </ng-template>
+
+         <br/><br/>
+
+        <select [(ngModel)] = "roomslist" name="roomslist" class="custom-select">
             <option [ngValue]="null">Select Room</option>
             <option *ngFor="let room of rooms">
                 {{room.roomname}}
@@ -33,19 +58,13 @@
         </select> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
         
         
-        <br/><br/>
+        <br/>
 
-        <button (click)="joinroom()" class="btn btn-primary">Join</button> <br>
-           
+        <button (click)="joinroom()" class="btn btn-outline-secondary">Join</button> <br>
+      </div>
       </ng-template>
 
-      <ng-template [ngIf]="isAdmin">
-        <div>
-          <label for="newroom">New Room</label>
-           <input type="text" [(ngModel)]="newroom" name="newroom" id="newroom" class="form-control"/>
-           <button (click)="createroom()" class="btn btn-primary">Create New Room</button>
-        </div>
-      </ng-template>
+      
     </form>
     <!--<h3>Notices</h3>
     {{roomnotice}}<br>
