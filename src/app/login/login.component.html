@@ -1,11 +1,22 @@
+<ng-template [ngIf]="isLogin">
+  <div class="container-fluid" style="background-color: bisque; height: 40px;">
+     <div class="h-100 d-inline-block border border-secondary rounded" style="background-color: blueviolet; width: 200px;">
+       Welcome, {{this.user.username}}
+     </div>
+
+    <div class="h-100 d-inline-block border border-secondary rounded" style="background-color: rgb(103, 51, 225); width: 200px;">
+       Your identity is {{this.user.type}}.
+    </div>
+
+    <div class="h-100 inline-block">
+       <button (click) = "logout()" class="btn btn-outline-primary">Log out</button>
+    </div>
+  </div>
+</ng-template>
 <div class="container">
   <div class="row align-items-start">
     <div class="col">
-        <ng-template [ngIf]="isLogin">
-            <p>Welcome, {{this.user.username}}</p>
-            <p>Your identity is {{this.user.type}}</p>
-            <button (click) = "logout()" class="btn btn-primary">Log out</button>
-        </ng-template>
+
     </div>
     <div class="col">
         <ng-template [ngIf]="isLogin" [ngIfElse]="login">
