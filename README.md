@@ -21,3 +21,10 @@ This collection have two colomns which are: roomname and socketid (unique). This
 ### Collection chatmessages
 The collection chatmessages stores all chat messages send by users, it has three colomns: room (roomname), user (username), message. This collection is created for storing all chat messages and who (user) in which room send it. It waits the server to check and get the chat history for a room.
 
+## REST API
+The chat application use REST API to communicates between server and client side. There are two routes defined for user authentication: login and logout.
+
+### Route login
+
+
+
