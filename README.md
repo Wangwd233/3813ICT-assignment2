@@ -10,7 +10,14 @@ Every time I finish the development of a large part such as the set of server, a
 This project use MongoDB to save data, the database has five collections, which are: users, rooms, socketrooms, and chatmessages.
 
 ### Collection users 
-The collection users contain a list of user informations: username, password and type (admin or user) and this collection is used for user authentication, to check username and password in the back-end.
+The collection users contain a list of user informations: username, password and type (admin or user). And this collection is used for user authentication, to check username and password in the back-end.
 
-###
+### Collection rooms
+This collection stored the list of all rooms (channels) with: roomname. The roomname is unique for the purpose of dividing different channels. 
+
+### Collection socketrooms
+This collection have two colomns which are: roomname and socketid (unique). This collection is created for recognize and store the user status when the user join in a room.
+
+### Collection chatmessages
+The collection chatmessages stores all chat messages send by users, it has three colomns: room (roomname), user (username), message. This collection is created for storing all chat messages and who (user) in which room send it. It waits the server to check and get the chat history for a room.
 
