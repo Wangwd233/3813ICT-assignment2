@@ -23,8 +23,18 @@ The collection chatmessages stores all chat messages send by users, it has three
 
 ## REST API
 The chat application use REST API to communicates between server and client side. There are two routes defined for user authentication: login and logout.
+route: 1. login
+          parameters
 
 ### Route login
+The actual route path is: '/api/login'. There will be a JSON parameter passed from client when the route is called, the http method is POST. And login route will query the database use the username which contains in the parameter to check if the user exist, and then compare if the password correct, save the user in the userlist, and return three parameters: msg, isLogin and user. Parameter msg contains the message to tell client if login success, and parameter isLogin is a boolean which let the client side check if the login action success. And user information are in the parameter user.
+
+### Route logout
+This route will be called with path: '/api/logout'. This route also require a JSON parameter with all user informations which POST by the http. This route will check the userlist to find if the user is already login and if true, it will then remove the user from the userlist to let them logout. 
+
+# Angular architecture
+
+
 
 
 
