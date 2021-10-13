@@ -45,7 +45,7 @@ Services: socketService.
 ## Component
 
 ### login Component
-This component is generated for let user login with username and password, after user input the username and password, they click the login button will trigger a function in the component called getUser(). This function will use http POST method to send the username and password to the server side with route '/api/login' and will recevive the  return value of msg to show client side and the parameter to check if login succeed. when login successfully, the user detail will print on the page with a logout button, and the logout button will trigger the function logout(), which will let user leave the current room first if user is in a room, and then POST logout requirement to the path '/api/logout' at server side, it will set the parameter isLogin to false and that will let user see the login interface again to notice the user has logout.
+This component is generated for let user login with username and password, after user input the username and password, they click the login button will trigger a function in the component called getUser(). This function will use http POST method to send the username and password to the server side with route '/api/login' and will receive the return value of msg to show client side and the parameter to check if login succeed. when login successfully, the user detail will print on the page with a logout button, and the logout button will trigger the function logout(), which will let user leave the current room first if user is in a room, and then POST logout requirement to the path '/api/logout' at server side, it will set the parameter isLogin to false and that will let user see the login interface again to notice the user has logout.
 
 ### chat Component
 The chat component is the child component of login component, only after the user has login successfully can show this component, it will use the socket service to require for the list of all room names from the server side, and list in the page for user to choose and join. The admin can create room by input room name and click the button, the function createroom() will trigger and the room name will send to server side and add to the database, and the component also recevive the new room list with the room created.
@@ -57,7 +57,17 @@ if user in a room click on the 'leave room' button, the function leaveroom() wil
 ## Service
 
 ### socket Service
-
+This service is generated for component use to connect server and send web socket. There are a list of service wait for calling:
+1. sendMessage(): When this function is called it will emit to server with message and user detail;
+2. joinroom(): This function will emit room name to the server by socket API "joinRoom" when it is called;
+3. leaveroom(): This function will emit room name to server socket API "leaveRoom" when it is called;
+4. joined(): This function will create a observable to receive a boolean send from server;
+5. createroom(): This function will send new room name to server by socket API "newroom" when it is called;
+6. getnumuser(): This function will create a observable to wait receive the count of number of users in the current room;
+7. reqroomList(): This function will require for the room list from server side;
+8. getroomList(): This function will create a obversable and wait for get room list from server side with socket API "roomlist";
+9. notice(): This function will create a obversable and wait for get any notice that send by socket API "notice";
+10. getMessage(): This function will create a obversable and wait for get the message history which emit from server side by socket API "message".
 
 
 
