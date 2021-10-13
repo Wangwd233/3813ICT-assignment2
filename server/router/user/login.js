@@ -20,7 +20,6 @@ module.exports = function(app, db){
                     if (err) throw err;
                     for(i=0; i<userlist.length; i++){
                         if (userlist[i] == req.body.username){
-                            res.send({msg:'User have login somewhere else', isLogin: false, user: user});
                             isLogin = true;
                         }else{
                             isLogin = false;
